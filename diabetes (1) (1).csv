@@ -1,0 +1,2475 @@
+Pregnancies,Glucose,BloodPressure,SkinThickness,Insulin,BMI,DiabetesPedigreeFunction,Age,Outcome,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,148,72,35,0,33.6,0.627,50,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,85,66,29,0,26.6,0.351,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,183,64,0,0,23.3,0.672,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,89,66,23,94,28.1,0.167,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac anonymous  class smartphone {
+
+  //Class variables
+  var number:Int=16
+  var nameofcompany:String=""Apple""
+
+  //Class method
+  def Display(){
+    println(""Name of Company:- ""+nameofcompany)
+    println(""Total number of smartphone generation:- ""+number)
+  }
+
+}
+object Main
+{
+  def main(args: Array[String]): Unit = {
+  new smartphone().Display();
+  }
+}
+","Prac all functions
+pip install pyspark
+
+#create Sample data
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import lit
+from datetime import datetime
+
+#Initialize Spark session
+spark=SparkSession.builder.appName('PysparkSQLFunctions').getOrCreate()
+
+spark
+
+#Sample Data
+data_Pranav=[
+    (1,""Krish Kumar"",""2024-07-14"",27,1895.42),
+    (2,""James Smith"",""2024-01-24"",21,744.45),
+    (3,""Akash Gupta"",""2024-04-17"",20,1254.65),
+    (4,""Jash Sarvia"",""2024-01-22"",24,2354.71),
+    (5,""Jay Shah"",""2024-04-12"",21,4521.12),
+    (6,""PranavNagwekar"",""2024-08-17"",22,2785.25),
+]
+
+#Create DataFrame
+columns=[""id"",""name"",""dob"",""age"",""salary""]
+df_Pranav=spark.createDataFrame(data_Pranav,columns)
+
+#show the initial DataFrame
+df_Pranav.show()
+
+df_Pranav.head()
+
+df_Pranav.collect()
+
+#col
+from pyspark.sql.functions import col
+df_Pranav.select(col('name')).show()
+
+#lit
+#Adds a new column with a literal value.
+
+df_country_Pranav=df_Pranav.withColumn(""country"",lit(""USA""))
+df_country_Pranav.show()
+
+df_Pranav.show()
+
+#expr
+
+from pyspark.sql.functions import expr
+df_age_Pranav=df_Pranav.withColumn(""age_plus_5"",expr(""age + 5""))
+df_age_Pranav.show()
+
+#when
+
+
+from pyspark.sql.functions import when
+
+df_classifications_Pranav=df_Pranav.withColumn('classification',
+                                 when(col('age')>=18,
+                                ""Adult"").otherwise(""Minor""))
+df_classifications_Pranav.show()
+
+#concat
+from pyspark.sql.functions import concat
+df_concat_Pranav=df_Pranav.withColumn(""full_name"",concat(col(""name""),lit("" "")))
+df_concat_Pranav.show()
+
+#substring
+from pyspark.sql.functions import substring
+df_substring_Pranav=df_Pranav.withColumn(""first_three_chars"",substring(col('name'),1,3))
+df_substring_Pranav.show()
+
+#split
+from pyspark.sql.functions import split
+df_split_Pranav=df_Pranav.withColumn(""name_array"",split(col(""name""),"" ""))
+df_split_Pranav.show()
+
+#regexp_replace
+
+from pyspark.sql.functions import regexp_replace
+df_replace_Pranav=df_Pranav.withColumn(""replaced_name"",regexp_replace(col(""name""),""Krish"",""Ajay""))
+df_replace_Pranav.show()
+
+#count
+from pyspark.sql.functions import count
+df_count_Pranav=df_Pranav.agg(count(""*"").alias(""total_count""))
+df_count_Pranav.show()
+
+#sum
+from pyspark.sql.functions import sum
+df_sum_Pranav=df_Pranav.agg(sum(""salary"").alias(""total_calar""))
+df_sum_Pranav.show()
+
+#avg
+from pyspark.sql.functions import avg
+df_avg_Pranav=df_Pranav.agg(avg(""age"").alias(""average_age""))
+df_avg_Pranav.show()
+
+#max
+from pyspark.sql.functions import max
+df_max_Pranav=df_Pranav.agg(max(""salary"").alias(""max_salary""))
+df_max_Pranav.show()
+
+#min
+from pyspark.sql.functions import min
+df_min_Pranav=df_Pranav.agg(min(""age"").alias(""min_age""))
+df_min_Pranav.show()
+
+#round
+from pyspark.sql.functions import round
+df_round_Pranav=df_Pranav.withColumn(""rounded_salary"",round(col('salary'),0))
+df_round_Pranav.show()
+
+#date_format
+from pyspark.sql.functions import date_format
+df_date_format_Pranav=df_Pranav.withColumn(""formatted_dob"",date_format(
+    col(""dob""),""MM/dd/yyyy""
+))
+df_date_format_Pranav.show()
+
+#current_date
+from pyspark.sql.functions import current_date
+df_current_date_Pranav=df_Pranav.withColumn('current_date',current_date())
+df_current_date_Pranav.show()
+
+#current_timestamp
+from pyspark.sql.functions import current_timestamp
+df_current_timestamp_Pranav=df_Pranav.withColumn('current_timestamp',current_timestamp())
+df_current_timestamp_Pranav.show(truncate=False)
+
+#year,month,dayofmonth
+from pyspark.sql.functions import year,month,dayofmonth
+df_year_Pranav=df_Pranav.withColumn(""year"",year(col('dob')))
+df_year_Pranav.show()
+
+#date_add
+from pyspark.sql.functions import date_add
+df_date_add_Pranav=df_Pranav.withColumn(""date_after_10_days"",
+                                        date_add(col(""dob""),10))
+df_date_add_Pranav.show()
+
+#date_sub
+from pyspark.sql.functions import date_sub
+df_date_sub_Pranav=df_Pranav.withColumn(""date_before_10_days"",
+                                        date_sub(col(""dob""),10))
+df_date_sub_Pranav.show()
+
+#datediff
+from pyspark.sql.functions import datediff
+df_date_diff_Pranav=df_Pranav.withColumn(""day_since_dob"",
+                                         datediff(current_date(),
+                                                  col('dob')))
+df_date_diff_Pranav.show()
+
+#to_date
+from pyspark.sql.functions import to_date
+df_to_date_Pranav=df_Pranav.withColumn(""dob_as_date"",to_date(col(""dob""),
+                                                             ""yyyy-MM-dd""))
+df_to_date_Pranav.show()
+
+#to_timestamp
+from pyspark.sql.functions import to_timestamp
+df_to_timestamp_Pranav=df_Pranav.withColumn(""dob_as_timestamp"",
+                                            to_timestamp(col(""dob""),
+                                                         ""yyyy-MM-dd""))
+df_to_timestamp_Pranav.show(truncate=False)
+
+#window
+from pyspark.sql.functions import window
+df_window_Pranav=df_Pranav.withColumn(""window"",window(col(""dob""),
+                                                      ""1 day""))
+df_window_Pranav.show(truncate=False)
+
+#rank,dense_rank,row_number
+from pyspark.sql.window import Window
+from pyspark.sql.functions import rank,dense_rank,row_number
+windowSpec=Window.orderBy(col(""salary"").desc())
+df_Pranav.withColumn(""rank"",rank().over(windowSpec)).withColumn(""dense_rank"",
+                      dense_rank().over(windowSpec)).withColumn(""row_number"",
+                      row_number().over(windowSpec)).show()
+
+#array
+from pyspark.sql.functions import array
+df_array_Pranav=df_Pranav.withColumn(""array_column"",array(col(""id""),col(""age"")))
+df_array_Pranav.show()
+
+#array_contains
+from pyspark.sql.functions import array_contains
+df_array_contains_Pranav=df_Pranav.withColumn(""contains_id_1"",
+                        array_contains(array(col(""id"")),1))
+df_array_contains_Pranav.show()
+
+#explode
+from pyspark.sql.functions import explode
+df_explode_Pranav=df_Pranav.withColumn(""exploded_array"",
+                  explode(array(col(""id""),col('age'))))
+df_explode_Pranav.show()
+
+#map
+from pyspark.sql.functions import create_map
+df_map_Pranav=df_Pranav.withColumn(""map_column"",create_map(lit(""name""),
+              col(""name""),lit('age'),col(""age"")))
+df_map_Pranav.show(truncate=False)
+
+#coalesce
+from pyspark.sql.functions import coalesce
+df_coalesce_Pranav=df_Pranav.withColumn(""coalesced_value"",
+                  coalesce(col('name'),col('age')))
+df_coalesce_Pranav.show()
+
+#isnull
+from pyspark.sql.functions import isnull
+df_isnull_Pranav=df_Pranav.withColumn(""is_name_null"",isnull(col(""name"")))
+df_isnull_Pranav.show()
+
+#isnan
+from pyspark.sql.functions import isnan
+df_isnan_Pranav=df_Pranav.withColumn(""is_age_nan"",isnan(col(""age"")))
+df_isnan_Pranav.show()
+
+#sha2
+from pyspark.sql.functions import sha2
+df_sha2_Pranav=df_Pranav.withColumn(""sha2_hash"",sha2(col(""name""),256))
+df_sha2_Pranav.show(truncate=False)
+
+#md5
+from pyspark.sql.functions import md5
+df_md5_Pranav=df_Pranav.withColumn(""md5_hash"",md5(col('name')))
+df_md5_Pranav.show(truncate=False)
+
+#monotonically_increasing_id
+from pyspark.sql.functions import monotonically_increasing_id
+df_monotonically_increasing_id_Pranav=df_Pranav.withColumn(""monotonically_increasing_id,"",
+                                monotonically_increasing_id())
+df_monotonically_increasing_id_Pranav.show()
+
+#length
+from pyspark.sql.functions import length
+df_length_Pranav=df_Pranav.withColumn(""name_length"",length(col(""name"")))
+df_length_Pranav.show()
+
+#upper and lower
+from pyspark.sql.functions import upper,lower
+#df_upper_Pranav=df_Pranav.withColumn(""upper_name"",upper(col(""name"")))
+df_upper_lower_Pranav=df_Pranav.withColumn('name_upper',
+                    upper(col(""name""))).withColumn(""name_lower"",
+                    lower(col(""name"")))
+df_upper_lower_Pranav.show()
+
+#trim,ltrim,rtrim
+from pyspark.sql.functions import trim,ltrim,rtrim
+""""""
+df_trim = df.withColumn(""trimmed_name"", trim(col(""name"")))
+df_trim.show()
+
+df_ltrim = df.withColumn(""ltrimmed_name"", ltrim(col(""name"")))
+df_ltrim.show()
+
+df_rtrim = df.withColumn(""rtrimmed_name"", rtrim(col(""name"")))
+df_rtrim.show()
+""""""
+df_all_Pranav=df_Pranav.withColumn(""name_trimmed"",
+              trim(col(""name""))).withColumn(""name_ltrimmed"",
+              ltrim(col(""name""))).withColumn(""name_rtrimmed"",
+              rtrim(col(""name"")))
+df_all_Pranav.show()
+
+#abs
+from pyspark.sql.functions import abs
+#df_abs = df.withColumn(""absolute_age"", abs(col(""age"")))
+#df_abs.show()
+df_abs_Pranav=df_Pranav.withColumn(""abs_salary"",abs(col(""salary"")-3000))
+df_abs_Pranav.show()
+
+#sqrt
+from pyspark.sql.functions import sqrt
+df_sqrt_Pranav=df_Pranav.withColumn(""sqrt_age"",sqrt(col(""age"")))
+df_sqrt_Pranav.show()
+
+#exp
+from pyspark.sql.functions import exp
+#df_exp = df.withColumn(""exp_salary"", exp(col(""salary"")))
+#df_exp.show()
+df_exp_Pranav=df_Pranav.withColumn('exp_age',exp(col(""age"")))
+df_exp_Pranav.show()
+
+#log,log10,log2
+from pyspark.sql.functions import log,log10,log2
+df_all_Pranav=df_Pranav.withColumn(""log_age"",
+              log(col('age'))).withColumn(""log10_age"",
+              log10(col('age'))).withColumn(""log2_age"",
+              log2(col('age')))
+df_all_Pranav.show()
+
+#greatest and least
+from pyspark.sql.functions import greatest,least
+df_greatest_Pranav=df_Pranav.withColumn(""greatest_value"",greatest(col(""id""),col(""age"")))
+print(df_greatest_Pranav.show())
+df_least_Pranav=df_Pranav.withColumn(""least_value"",least(col(""id""),col(""age"")))
+print(df_least_Pranav.show())
+
+#pow
+from pyspark.sql.functions import pow
+df_pow_Pranav=df_Pranav.withColumn(""pow_result"",pow(col(""id""),
+                                                    col(""age"")))
+df_pow_Pranav.show(truncate=False)
+
+#round,bround
+from pyspark.sql.functions import round,bround
+df_round_Pranav=df_Pranav.withColumn(""rounded_salary"",
+                                     round(col(""salary""),0))
+print(df_round_Pranav.show())
+df_bround_Pranav=df_Pranav.withColumn(""brounded_salary"",
+                                      bround(col(""salary""),0))
+print(df_bround_Pranav.show())
+
+#degrees,radians
+from pyspark.sql.functions import degrees,radians
+df_degrees_Pranav=df_Pranav.withColumn(""degrees_value"",degrees(col('age')))
+print(df_degrees_Pranav.show())
+df_radians_Pranav=df_Pranav.withColumn(""radians_value"",radians(col(""age"")))
+print(df_radians_Pranav.show())
+
+#signum
+from pyspark.sql.functions import signum
+df_signum_Pranav=df_Pranav.withColumn(""signum_value"",signum(col('age')))
+df_signum_Pranav.show()
+
+#hex,unhex
+from pyspark.sql.functions import hex,unhex
+df_all_Pranav=df_Pranav.withColumn(""hex_name"",hex(col(""id""))).withColumn(""unhex_name"",
+                                   unhex(col(""id"")))
+df_all_Pranav.show()
+
+#nvl,#nvl2
+from pyspark.sql.functions import nvl,nvl2,col
+df_nvl_Pranav=df_Pranav.withColumn(""nv1_age"",nvl(col(""age""),col(""id"")))
+print(df_nvl_Pranav.show())
+
+df_nvl2_Pranav=df_Pranav.withColumn(""nv2_age"",nvl2(col(""age""),col(""id""),col(""salary"")))
+print(df_nvl2_Pranav.show())
+
+#reverse
+from pyspark.sql.functions import reverse
+df_reverse_Pranav=df_Pranav.withColumn(""reversed_name"",reverse(col('name')))
+df_reverse_Pranav.show()
+
+#initcap
+from pyspark.sql.functions import initcap
+df_initcap_Pranav=df_Pranav.withColumn(""capitalized_name"",initcap(col(""name"")))
+df_initcap_Pranav.show()
+
+#instr
+from pyspark.sql.functions import instr
+df_instr_Pranav=df_Pranav.withColumn(""Position_of_a"",instr(col(""name""),""a""))
+print(df_instr_Pranav.show())
+print(df_instr_Pranav.printSchema())
+
+#locate
+from pyspark.sql.functions import locate
+df_locate_Pranav=df_Pranav.withColumn(""locate_shah"",locate(""Shah"",col(""name"")))
+df_locate_Pranav.show()
+
+#soundex
+from pyspark.sql.functions import soundex
+df_soundex_Pranav=df_Pranav.withColumn(""soundex_name"",soundex(col(""name"")))
+df_soundex_Pranav.show()
+
+#levenshtein
+from pyspark.sql.functions import levenshtein
+df_levenshtein_Pranav=df_Pranav.withColumn(""levenshtein_distance"",
+                       levenshtein(col(""name""),lit(""Krish Kumar"")))
+df_levenshtein_Pranav.show()
+
+#conv
+from pyspark.sql.functions import conv
+df_conv_Pranav=df_Pranav.withColumn(""binary_value"",conv(col(""id""),10,2))
+df_conv_Pranav.show()
+
+#translate
+from pyspark.sql.functions import translate
+df_translate_Pranav=df_Pranav.withColumn(""translate_name"",
+                    translate(col(""name""),""h"",""a""))
+df_translate_Pranav.show()
+
+#crc32
+from pyspark.sql.functions import crc32
+df_crc32_Pranav=df_Pranav.withColumn(""crc32_name"",crc32(col(""name"")))
+df_crc32_Pranav.show()
+
+#uuid
+from pyspark.sql.functions import expr
+df_uuid_Pranav=df_Pranav.withColumn(""uuid"",expr(""uuid()""))
+df_uuid_Pranav.show(truncate=False)
+
+#percent_rank
+from pyspark.sql.functions import percent_rank
+window_Spec=Window.orderBy(col(""salary"").desc())
+df_percent_rank_Pranav=df_Pranav.withColumn(""percent_rank"",
+                        percent_rank().over(windowSpec))
+df_percent_rank_Pranav.show()
+
+#cume_dist
+from pyspark.sql.functions import cume_dist
+df_cume_dist_Pranav=df_Pranav.withColumn(""cume_dist"",
+                    cume_dist().over(windowSpec))
+df_cume_dist_Pranav.show()
+
+#ntile
+from pyspark.sql.functions import ntile
+df_ntile_Pranav=df_Pranav.withColumn(""ntile"",ntile(3).over(windowSpec))
+df_ntile_Pranav.show()
+
+#flatten
+from pyspark.sql.functions import flatten
+df_flatten_Pranav=df_Pranav.withColumn(""flattened_array"",
+                                       flatten(array(array(lit(1),lit(2)),array(lit(3)))))
+df_flatten_Pranav.show()
+
+#grouping_id
+from pyspark.sql.functions import grouping_id
+from pyspark.sql import functions as F
+df_grouping_sets_Pranav=df_Pranav.cube(""age"",""salary"").agg(grouping_id().alias(""grouping_id""),
+                         F.sum('salary'))
+df_grouping_sets_Pranav.show()
+
+#rollup
+df_rollup_Pranav=df_Pranav.rollup(""age"",""salary"").count()
+df_rollup_Pranav.show()
+
+#corr
+from pyspark.sql.functions import corr
+df_corr_Pranav=df_Pranav.select(corr(col(""age""),col(""salary"")))
+df_corr_Pranav.show()
+
+from pyspark.sql.functions import collect_list
+df_all_Pranav=df_Pranav.groupBy(""age"").agg(collect_list(""name"").alias(""names"")).show()
+df_all_Pranav
+"
+0,137,40,35,168,43.1,2.288,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac constructor class student_con (id:Int,name:String) {
+  def show(): Unit = {
+    println(id + "" "" + name)
+  }
+}
+object MainObject{
+  def main(args:Array[String]): Unit ={
+    var s = new student_con(100,""Martin"")
+    var s1= new student_con(101,""Jack"")
+    s.show()
+    s1.show()
+  }
+}
+","prac sparkstream
+pip install pyspark
+
+
+from pyspark.sql import SparkSession
+from pyspark import SparkContext
+from pyspark.streaming import StreamingContext
+
+spark=SparkSession.builder.master('local').appName(""WordCount"").getOrCreate()
+sc=spark.sparkContext
+
+ssc=StreamingContext(sc,10)
+
+import os
+
+stream_dir=""/input.txt""
+if not os.path.exists(stream_dir):
+  os.mkdir(stream_dir)
+
+lines_Pranav=ssc.textFileStream(stream_dir)
+
+lines_Pranav
+
+words_Pranav=lines_Pranav.flatMap(lambda line:line.split("" ""))
+word_counts_Pranav=words_Pranav.map(lambda word: (word,1)).reduceByKey(lambda a,b:a+b)
+
+word_counts_Pranav.pprint()
+
+word_counts_Pranav
+
+ssc.start()
+
+import time
+
+#Create a series of files to simulate the stream.
+for i in range(5):
+  with open(f""/content/file{i}.txt"",""w"") as f:
+    f.write(f""This is a streaming example file {i}.\n This example shows streaming word count. \n"")
+  time.sleep(10)
+
+ssc.stop(stopSparkContext=False,stopGraceFully=True)
+"
+5,116,74,0,0,25.6,0.201,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac overload class student_con (id:Int,name:String) {
+  var marks:Int=0
+  def show(): Unit = {
+    println(id + "" "" + name + "" "" + marks)
+  }
+
+  def this(id: Int, name: String, marks: Int) {
+    this(id, name)
+    this.marks = marks
+  }
+}
+
+object MainObject{
+  def main(args:Array[String]): Unit ={
+    var s = new student_con(100,""Martin"",25)
+    var s1= new student_con(101,""Jack"")
+    s.show()
+    s1.show()
+  }
+}
+
+","prac recommendation
+
+pip install pyspark
+
+import pandas as pd
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.master('local').appName('Movie_Recom').config(""spark.some.config.option"",'some-value').getOrCreate()
+
+rating_Pranav = spark.read.format(""csv"").option(""header"",""true"").option(""inferSchema"", ""true"").load(r""/content/ratings_small.csv"")
+rating_Pranav = rating_Pranav.drop('timestamp')
+
+movies_Pranav = spark.read.format(""csv"").option(""header"",""true"").option(""inferSchema"", ""true"").load(r""/content/movies_metadata.csv"")
+movie_data_Pranav = rating_Pranav.join(movies_Pranav, on=rating_Pranav.movieId == movies_Pranav.id)
+
+Columns = len(movie_data_Pranav.columns)
+Rows = movie_data_Pranav.count()
+print('Number of Columns: {}\nNumber of Rows: {}'.format(Columns, Rows))
+movie_data_Pranav.columns
+
+import numpy as np
+from pyspark.sql.functions import when
+movie_data_Pranav=movie_data_Pranav.withColumn('userId',when(movie_data_Pranav.userId==0,np.nan).otherwise(movie_data_Pranav.userId))
+movie_data_Pranav=movie_data_Pranav.withColumn(""id"",when(movie_data_Pranav.id==0,np.nan).otherwise(movie_data_Pranav.id))
+movie_data_Pranav = movie_data_Pranav.withColumn(""rating"",when(movie_data_Pranav.rating==0,np.nan).otherwise(movie_data_Pranav.rating))
+movie_data_Pranav = movie_data_Pranav.withColumn(""title"",when(movie_data_Pranav.title==0,np.nan).otherwise(movie_data_Pranav.title))
+from pyspark.sql.types import IntegerType
+movie_data_Pranav = movie_data_Pranav.withColumn(""budget"", movie_data_Pranav[""budget""].cast(IntegerType()))
+movie_data_Pranav.show()
+
+(training,test)=movie_data_Pranav.randomSplit([0.8,0.2])
+
+from pyspark.ml.evaluation import RegressionEvaluator
+from pyspark.ml.recommendation import ALS
+
+training = training.withColumn('id',training['id'].cast(IntegerType()))
+
+
+als = ALS(maxIter=5,regParam=0.09,rank=25,userCol=""userId"",itemCol=""id"",ratingCol=""rating"",coldStartStrategy=""drop"",nonnegative=True)
+model = als.fit(training)
+
+evaluator=RegressionEvaluator(metricName='rmse',labelCol='rating',predictionCol='prediction')
+test = test.withColumn('id',test['id'].cast(IntegerType()))
+predictions=model.transform(test)
+rmse=evaluator.evaluate(predictions)
+print(""RMSE=""+str(rmse))
+predictions.show()
+
+single_user_Pranav=test.filter(test['userId']==254).select(['id','userId','title','genres'])
+single_user_Pranav.show(truncate=False)
+
+recommendations_Pranav=model.transform(single_user_Pranav)
+recommendations_Pranav.orderBy('prediction',ascending=False).show(truncate=False)
+"
+3,78,50,32,88,31,0.248,26,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac list package demo
+object Main3 {
+  val myList:List[Int]=List(1,2,3,4,5,6,7)
+  val names:List[String]=List(""One"",""Two"",""Three"");
+  def main(args:Array[String]):Unit={
+
+
+    println(0::myList)
+    println(myList)
+    println(names)
+
+    println(Nil)
+
+    println(myList.head)
+    println(myList.tail)
+    println(names.isEmpty)
+    println(myList.reverse)
+    println(List.fill(5)(2))
+
+
+    myList.foreach(println)
+
+    var sum:Int=0;
+    myList.foreach(sum+=_)
+    println(sum)
+    for(name<-names)
+      {
+        println(name)
+      }
+    println(names(0))
+  }
+}
+
+
+","prac linear regression
+!pip install pyspark
+
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.master(""local"").appName(""linear_regression"").getOrCreate()
+
+real_estate_Pranav=spark.read.csv(""/content/Real estate.csv"",header=True,inferSchema=True)
+real_estate_Pranav.printSchema()
+
+real_estate_Pranav.show(2)
+
+real_estate_Pranav.describe().show()
+
+#VectorAssembler to transform data into feature columns
+from pyspark.ml.feature import VectorAssembler
+assembler=VectorAssembler(inputCols=[
+    'X1 transaction date',
+    'X2 house age',
+    'X3 distance to the nearest MRT station',
+    'X4 number of convenience stores',
+    'X5 latitude',
+    'X6 longitude'],
+    outputCol='features')
+
+data_set_Pranav=assembler.transform(real_estate_Pranav)
+data_set_Pranav.select(['features','Y house price of unit area']).show(2)
+
+#Split into train and test set
+train_data,test_data=data_set_Pranav.randomSplit([0.7,0.3])
+
+train_data.show(truncate=False)
+
+test_data.show(truncate=False)
+
+#Train your model
+from pyspark.ml.regression import LinearRegression
+lr_Pranav=LinearRegression(labelCol='Y house price of unit area')
+lrmodel_Pranav=lr_Pranav.fit(train_data)
+
+#Perform descriptive analysis with correlation
+test_stats_Pranav=lrmodel_Pranav.evaluate(test_data)
+print(f""RMSE:{test_stats_Pranav.rootMeanSquaredError}"")
+print(f""R2: {test_stats_Pranav.r2}"")
+print(f""MSE: {test_stats_Pranav.meanSquaredError}"")
+"
+10,115,0,0,0,35.3,0.134,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac sets object set1 {
+  def main(args:Array[String]):Unit={
+    val fruits=Set(""Apple"",""Mango"",""Cherry"",""Grapes"")
+    val nums:Set[Int]=Set()
+    println(""SET:- ""+fruits)
+    println(""Head of Fruits Set:- ""+fruits.head)
+    println(""Tail of Fruits Set:- ""+fruits.tail)
+    println(""Is Fruits set empty? ""+fruits.isEmpty)
+    println(""Is Nums set empty? ""+nums.isEmpty)
+  }
+}
+object set2 {
+  def main(args: Array[String]): Unit = {
+    val fruits = Set(""Apple"", ""Mango"", ""Cherry"", ""Grapes"")
+    val fruits2 = Set(""Pineapple"", ""banana"")
+
+    println(""SET1:- ""+fruits)
+    println(""SET2:- ""+fruits2)
+    var fruit = fruits ++ fruits2
+    println(""fruit1 ++ fruit2 : "" + fruit)
+  }
+}
+object set3 {
+  def main(args: Array[String]) {
+    val num1 = Set(5, 6, 9, 20, 30, 45)
+    val num2 = Set(50, 60, 9, 20, 35, 55)
+
+    println(""Num set1:- ""+num1)
+    println(""Num set2:- ""+num2)
+    println(""num1.&(num2) : "" + num1.&(num2))
+    println(""num1.intersect(num2) : "" + num1.intersect(num2))
+  }
+}
+object set4 {
+  def main(args: Array[String]): Unit = {
+    val num = Set(5, 6, 9, 20, 30, 45)
+    println(""Set:- ""+num)
+    println(""Min element in Set(5,6,9,20,30,45) : "" + num.min)
+    println(""Max element in Set(5,6,9,20,30,45) : "" + num.max)
+  }
+}
+object set5 {
+  def main(args: Array[String]): Unit = {
+    val fruits = Set(""Apple"", ""Mango"", ""Cherry"", ""Grapes"")
+    println(""SET:- "" + fruits)
+    println(""Iterating...."")
+    fruits.foreach(println)
+    for (name <- fruits) {
+      println(name)
+    }
+  }
+}
+
+","prac logistic
+
+!pip install pyspark
+
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName('ml-diabetes').getOrCreate()
+
+df_Pranav=spark.read.csv('/content/diabetes.csv',header=True,inferSchema=True)
+df_Pranav.printSchema()
+
+import pandas as pd
+pd.DataFrame(df_Pranav.take(5),columns=df_Pranav.columns).transpose()
+
+df_Pranav.show()
+
+df_Pranav.toPandas()
+
+df_Pranav.groupby('Outcome').count().toPandas()
+
+#making numericla features
+numeric_features=[t[0] for t in df_Pranav.dtypes if t[1]=='int']
+
+numeric_features
+
+df_Pranav.select(numeric_features).describe().toPandas().transpose()
+
+from pandas.plotting import scatter_matrix
+numeric_data=df_Pranav.select(numeric_features).toPandas()
+
+axs=scatter_matrix(numeric_data,figsize=(8,8))
+
+#rotate axis labels and remove axis ticks
+n=len(numeric_data.columns)
+for i in range(n):
+  v=axs[i,0]
+  v.yaxis.label.set_rotation(0)
+  v.yaxis.label.set_ha('right')
+  v.set_yticks(())
+  h=axs[n-1,i]
+  h.xaxis.label.set_rotation(90)
+  h.set_xticks(())
+
+from pyspark.sql.functions import isnull,when,count,col
+df_Pranav.select([count(when(isnull(c),c)).alias(c)for c in df_Pranav.columns]).show()
+
+dataset = df_Pranav.drop('SkinThickness')
+dataset = dataset.drop('Insulin')
+dataset_new = dataset.drop('DiabetesPedigreeFunction')
+dataset_final = dataset_new.drop('Pregnancies')
+
+dataset_final.show()
+
+#Assemble all the features with VectorAssembler
+required_features=['Glucose','BloodPressure','BMI','Age']
+from pyspark.ml.feature import VectorAssembler
+
+assembler=VectorAssembler(inputCols=required_features,outputCol='features')
+transformed_data_Pranav=assembler.transform(dataset_final)
+transformed_data_Pranav.show()
+
+# Split the data
+(training_data, test_data) = transformed_data_Pranav.randomSplit([0.8,0.2], seed =20)
+
+print(""Training Dataset Count: "" + str(training_data.count()))
+print(""Test Dataset Count: "" + str(test_data.count()))
+
+from pyspark.ml.classification import LogisticRegression
+lr_Pranav=LogisticRegression(featuresCol='features',labelCol='Outcome',maxIter=50)
+lrmodel_Pranav=lr_Pranav.fit(training_data)
+lr_predictions_Pranav=lrmodel_Pranav.transform(test_data)
+
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+multi_evaluator=MulticlassClassificationEvaluator(labelCol='Outcome',metricName='accuracy')
+print('Logistic Regression Accuracy:',multi_evaluator.evaluate(lr_predictions_Pranav))
+
+spark.stop()
+"
+2,197,70,45,543,30.5,0.158,53,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac maps object maps {
+  val mymap: Map [Int,String]=Map(801->""Max"",802->""Tom"",803->""Akash"",804->""May"")
+  val mymap2:Map [Int,String]=Map(805->""June"",806->""Jean"")
+  def main(args:Array[String]):Unit=
+    {
+      println(mymap)
+      println(""Name of Person with uid as 801:- ""+mymap(801))
+      println(""All Uids:- ""+mymap.keys)
+      println(""All Names:- ""+mymap.values)
+      println(""Is it empty? ""+mymap.isEmpty)
+
+      println()
+      println(""Iterating..."")
+      mymap.keys.foreach{key=>
+      println(""Key""+key)
+      println(""Value""+mymap(key))
+      }
+
+      println()
+      println(""Does the map contain 801? ""+mymap.contains(801))
+      println(""Concatenation of two maps:-"")
+      println(mymap ++ mymap2)
+    }
+
+}
+
+","prac feature selection
+!pip install pyspark
+
+from pyspark.sql import SparkSession
+from pyspark.ml.feature import StringIndexer, OneHotEncoder,StandardScaler,VectorAssembler,ChiSqSelector
+from pyspark.ml import Pipeline
+from pyspark.sql.functions import col
+
+#create a spark session
+spark=SparkSession.builder.appName(""BoustonHousingFeatureEngineering"").getOrCreate()
+
+##1. Load the dataset into Pyspark
+#Assume we have a csv file with headers
+data_Pranav=spark.read.csv(""/content/HousingData.csv"",header=True,inferSchema=True)
+#Print Schema
+data_Pranav.printSchema()
+
+#define categorical and numerical columns
+categorical_cols_Pranav=[""CHAS"",""RAD""]
+numerical_cols_Pranav=[""CRIM"",""ZN"",""INDUS"",""NOX"",""RM"",""AGE"",""DIS"",""TAX"",""PTRATIO"",""B"",""LSTAT""]
+
+#import double type
+from pyspark.sql.types import DoubleType
+
+# 2. Handle missing values and ocnvert to appropriate types
+for col_name in numerical_cols_Pranav+[""MEDV""]:
+  data_Pranav=data_Pranav.withColumn(col_name,col(col_name).cast(DoubleType()))
+
+#Use imputer to handle nan values in numerical columns
+from pyspark.ml.feature import Imputer
+imputer_Pranav=Imputer(inputCols=numerical_cols_Pranav,outputCols=numerical_cols_Pranav)
+imputer_Pranav.setStrategy(""mean"")
+
+# 3. Handle categorical features
+# For categorical columns, replace NaN with a placeholder value before indexing
+from pyspark.sql.functions import when, col
+for cat_col in categorical_cols_Pranav:
+    data_Pranav = data_Pranav.withColumn(cat_col, when(col(cat_col).isNull(), ""Unknown"").otherwise(col(cat_col)))
+
+indexers = [StringIndexer(inputCol=col, outputCol=f""{col}_indexed"", handleInvalid=""keep"") for col in categorical_cols_Pranav]
+encoders = [OneHotEncoder(inputCol=f""{col}_indexed"", outputCol=f""{col}_encoded"") for col in categorical_cols_Pranav]
+
+# 4. Scale numerical features
+assembler_num = VectorAssembler(inputCols=numerical_cols_Pranav, outputCol=""num_features"")
+scaler = StandardScaler(inputCol=""num_features"", outputCol=""scaled_num_features"", withStd=True, withMean=True)
+
+# 5. Combine features
+encoded_cols=[f""{col}_encoded"" for col in categorical_cols_Pranav]
+assembler=VectorAssembler(inputCols=encoded_cols+[""scaled_num_features""],outputCol=""features"")
+
+# 6. Perform feature selection
+median_medv_Pranav=data_Pranav.approxQuantile(""MEDV"",[0.5],0.01)[0]
+data_Pranav=data_Pranav.withColumn(""label"",(col(""MEDV"")>median_medv_Pranav).cast(""double""))
+selector=ChiSqSelector(numTopFeatures=10,featuresCol=""features"",outputCol=""selected_features"",labelCol=""label"")
+
+# Create and fit the pipeline
+pipeline=Pipeline(stages=[imputer_Pranav]+indexers+encoders+[assembler_num,scaler,assembler,selector])
+try:
+  model_Pranav=pipeline.fit(data_Pranav)
+  result_Pranav=model_Pranav.transform(data_Pranav)
+
+  #show result
+  result_Pranav.select(""selected_features"",""label"").show(5,truncate=False)
+
+  #get feature importances
+  feature_importances_Pranav=model_Pranav.stages[-1].selectedFeatures
+  print(""Selected feature indices:"",feature_importances_Pranav)
+
+except Exception as e:
+  print(f""An error occured:{str(e)}"")
+
+#Stop the spark session
+spark.stop()
+"
+8,125,96,0,0,0,0.232,54,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac tuples object tuples {
+
+  val mytuple=(1,2,""hello"",20.5)
+
+  val mytuple4=new Tuple4(1,2,""hello"",20.5)
+  val mytuple5=new Tuple5(1,2,""hello"",20.5,(2,3))
+
+  def main(args:Array[String]):Unit={
+    println(mytuple)
+    println(mytuple4._4)
+    mytuple.productIterator.foreach{
+      i=>println(i)
+    }
+    println(mytuple5._5._1)
+  }
+
+}
+","prac tree
+pip install pyspark
+
+from pyspark.sql import SparkSession
+spark=SparkSession.builder.appName(""ml_diabetes"").getOrCreate()
+
+df=spark.read.csv(""/content/diabetes.csv"",header=True,inferSchema=True)
+df.printSchema()
+
+import pandas as pd
+pd.DataFrame(df.take(5),columns=df.columns).transpose()
+
+df.show()
+
+df.toPandas()
+
+df.groupby(""Outcome"").count().toPandas()
+
+numeric_features=[t[0] for t in df.dtypes if t[1]=='int']
+numeric_features
+
+df.select(numeric_features).describe().toPandas().transpose()
+
+from pandas.plotting import scatter_matrix
+numeric_data=df.select(numeric_features).toPandas()
+axs=scatter_matrix(numeric_data,figsize=(8,8))
+
+n=len(numeric_data.columns)
+for i in range(n):
+  v=axs[i,0]
+  v.yaxis.label.set_rotation(0)
+  v.yaxis.label.set_ha('right')
+  v.set_yticks(())
+  h=axs[n-1,i]
+  h.xaxis.label.set_rotation(90)
+  h.set_xticks(())
+
+from pyspark.sql.functions import isnull,when,count,col
+df.select([count(when(isnull(c),c)).alias(c) for c in df.columns]).show()
+
+dataset=df.drop('SkinThickness')
+dataset=dataset.drop('Insulin')
+dataset.show()
+
+dataset_new=dataset.drop('DiabetesPedigreeFunction')
+dataset_new.show()
+
+dataset_final=dataset_new.drop('Pregnancies')
+dataset_final.show()
+
+required_features=['Glucose','BloodPressure','BMI','Age']
+from pyspark.ml.feature import VectorAssembler
+assembler=VectorAssembler(inputCols=required_features,outputCol='features')
+transformed_data=assembler.transform(dataset_final)
+transformed_data.show()
+
+#split the data
+(training_data,test_data)=transformed_data.randomSplit([0.8,0.2],seed=2020)
+print(""Training dataset count: ""+str(training_data.count()))
+print(""Test dataset count: ""+str(test_data.count()))
+
+from pyspark.ml.classification import DecisionTreeClassifier
+dt=DecisionTreeClassifier(featuresCol='features',labelCol='Outcome',maxDepth=3)
+dtmodel=dt.fit(training_data)
+dt_predictions=dtmodel.transform(test_data)
+dt_predictions.select('Glucose','BloodPressure','BMI','Age','Outcome').show(10)
+
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+multi_evaluator=MulticlassClassificationEvaluator(labelCol='Outcome',metricName='accuracy')
+print(""Decision Tree Accuracy: "",multi_evaluator.evaluate(dt_predictions))
+
+from pyspark.ml.classification import GBTClassifier
+gb = GBTClassifier(labelCol = 'Outcome', featuresCol = 'features')
+gbModel = gb.fit(training_data)
+gb_predictions = gbModel.transform(test_data)
+
+from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+multi_evaluator = MulticlassClassificationEvaluator(labelCol = 'Outcome', metricName = 'accuracy')
+print('Gradient-boosted Trees Accuracy:', multi_evaluator.evaluate(gb_predictions))
+"
+4,110,92,0,0,37.6,0.191,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac loop object Main {
+  def main(args: Array[String]): Unit = {
+    println(""Enter an integer: "")
+    val num = scala.io.StdIn.readInt()
+    //val num = input.toInt
+    if (num % 2 == 0) {
+      println(s""The number $num is even."")
+    } else {
+      println(s""The number $num is odd."")
+    }
+  }
+}
+object Main2 {
+  def main(args: Array[String]): Unit = {
+    var x=0;
+    while(x<5){
+      println(""x=""+x);
+      x+=1;
+    }
+    var y=0
+    do{
+      println(""y=""+y)
+      y+=1
+    }
+    while(y<5)
+    println(""y=""+y)
+  }
+}
+object Main2 {
+  def main(args: Array[String]): Unit = {
+    for (i <- 1 to 5) {
+      println(s""i=$i"");
+    }
+    for (j<-1 until 3){
+      println(s""j=$j"");
+    }
+  }
+}
+
+object Main2 {
+  def main(args: Array[String]): Unit = {
+    for (i <- 1 to 5;j<-1 until 3) {
+      println(s""i=$i,j=$j"");
+    }
+  }
+}
+
+
+import scala.util.Random
+object switch_case {
+  def main(args:Array[String]): Unit = {
+    val x: Int = Random.nextInt(10)
+    var statement=x match {
+      case 0 => ""zero""
+      case 1 => ""one""
+      case 2 => ""two""
+      case _ => ""other""
+
+
+    }
+    println(x)
+    println(statement)
+  }
+}
+
+","prac flight delay
+
+pip install pyspark
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col,sum,avg,count
+
+#initialize SparkSession
+spark=SparkSession.builder.appName(""Flights Analysis"").getOrCreate()
+#load the flights dataset
+flights=spark.read.format('csv').option(""header"",""true"").option(""inferSchema"",""true"").load(""/content/departuredelays.csv"")
+
+spark
+
+#Create a temporary view of the DataFrame
+flights.createOrReplaceTempView(""flights"")
+
+#Perform analysis using Spark Sql
+#Example 1:Average delay by origin airport
+avg_delay_by_origin_Pranav=spark.sql(""""""
+    Select origin,AVG(delay) as avg_delay
+    FROM flights
+    GROUP BY origin
+    ORDER BY avg_delay DESC
+    LIMIT 10
+
+"""""")
+
+avg_delay_by_origin_Pranav.show()
+
+#Example 2: Total flights and average delay by day of week
+flights_by_day_Pranav=spark.sql(""""""
+SELECT date,COUNT(*) as total_flights,AVG(delay) as avg_delay
+FROM flights
+GROUP BY date
+ORDER BY date
+LIMIT 7
+"""""")
+
+flights_by_day_Pranav.collect()
+
+flights_by_day_Pranav.show()
+
+#Example 3: Top 5 routes with the highest total delay
+top_delayed_routes_Pranav=spark.sql(""""""
+SELECT origin, destination,sum(delay) as total_delay,
+count(*) as flight_count
+from flights
+group by origin, destination
+order by total_delay desc
+limit 5
+"""""")
+
+top_delayed_routes_Pranav.show()
+
+#show results
+print(""Top 10 origins by average delay:"")
+avg_delay_by_origin_Pranav.show()
+
+print(""\n Flights and average delay by day (first week):"")
+flights_by_day_Pranav.show()
+
+print(""\n Top 5 routes with highest total delay:"")
+top_delayed_routes_Pranav.show()
+
+#Stop the SparkSession
+spark.stop()
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col,sum,avg,count,hour,month
+
+#Initialize SparkSession
+spark=SparkSession.builder.appName(""Extended Flights Analysis"").getOrCreate()
+
+#load the flights dataset
+flights=spark.read.format(""csv"").option(""header"",""true"")\
+.option(""inferSchema"",""true"")\
+.load(""/content/departuredelays.csv"")
+
+#Create a temporary view of the DataFrame
+flights.createOrReplaceTempView(""flights"")
+
+#Example 4: Average delay by origin airport (Top10)
+avg_delay_origin_Pranav=spark.sql(""""""
+select origin,avg(delay) as avg_delay
+from flights
+group by origin
+order by avg_delay desc
+limit 10
+"""""")
+
+#Example 5: Top 5 busiest routes
+busiest_routes_Pranav=spark.sql(""""""
+select origin,destination,count(*) as flight_count
+from flights
+group by origin,destination
+order by flight_count desc
+limit 5
+"""""")
+
+#Example 6: Monthly flight trends
+monthly_trends_Pranav=spark.sql(""""""
+select substring(cast(date as string),5,2) as month,
+count(*) as total_flights,
+avg(delay) as avg_delay
+from flights
+group by substring(cast(date as string),5,2)
+order by month
+"""""")
+
+#Example 7: Percentage of delayed flights by origin
+delayed_percentage_Pranav=spark.sql(""""""
+select origin, count(*) as total_flights,
+sum(case when delay > 0 then 1 else 0 end) as delayed_flights,
+(sum(case when delay > 0 then 1 else 0 end)*100.0/count(*)) as delayed_percentage
+from flights
+group BY origin
+order BY delayed_percentage DESC
+limit 10
+"""""")
+
+# Example 8: Average delay by hour of day
+delay_by_hour_Pranav = spark.sql(""""""
+    SELECT
+        CAST(SUBSTRING(CAST(date AS STRING), 10, 2) AS INT) as hour,
+        AVG(delay) as avg_delay
+    FROM flights
+    GROUP BY SUBSTRING(CAST(date AS STRING), 10, 2)
+    ORDER BY hour
+"""""")
+
+#show results
+print(""Top 10 origins by average delay:"")
+avg_delay_origin_Pranav.show()
+
+print(""\nTop 5 busiest routes:"")
+busiest_routes_Pranav.show()
+
+print(""\nMonthly flight trends:"")
+monthly_trends_Pranav.show()
+
+print(""\nTop 10 origins by percentage of delayed flights:"")
+delayed_percentage_Pranav.show()
+
+print(""\nAverage delay by hour of day:"")
+delay_by_hour_Pranav.show()
+
+# Stop the SparkSession
+spark.stop()
+"
+10,168,74,0,0,38,0.537,34,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac single multiple inheritance package P4
+
+object Single {
+  class a{
+    var pquantity: Int = 100
+    var pname: String = ""Apple""
+  }
+  class b extends a{
+    var cost:Int=10
+    def show(): Unit ={
+      println(""Product Name:- "" + pname)
+      println(""Product Quantity:- "" + pquantity)
+      println(""Product Cost:- "" + cost)
+    }
+  }
+  def main(args:Array[String]): Unit ={
+    var x= new b()
+    x.show()
+  }
+}
+package P4
+
+object Multiple_Inheritance {
+  trait Printable {
+    def print()
+  }
+
+  trait Showable {
+    def show()
+  }
+
+  class A6 extends Printable with Showable {
+    def print(): Unit ={
+      println(""This is printable"");
+    }
+    def show(): Unit ={
+      println(""This is showable"");
+    }
+
+  }
+
+    def main(args: Array[String]): Unit = {
+      var a = new A6()
+      a.print()
+      a.show()
+    
+  }
+}
+
+package P4
+
+object Multiple_Inheritance {
+  abstract class Printable {
+    def print()
+  }
+
+  trait Showable {
+    def show()
+  }
+
+  class A6 extends Printable with Showable {
+    def print(): Unit ={
+      println(""This is printable"");
+    }
+    def show(): Unit ={
+      println(""This is showable"");
+    }
+
+  }
+
+    def main(args: Array[String]): Unit = {
+      var a = new A6()
+      a.print()
+      a.show()
+
+  }
+}
+
+","prac house price
+
+pip install pyspark
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col,avg,max,min
+
+#Initialize Spark session
+spark=SparkSession.builder.appName(""California Housing Analysis"").getOrCreate()
+
+#Laod Built-in Dataset
+#(Assuming that the dataset is available locally in the sample data directory)
+df_Pranav=spark.read.csv(""/content/sample_data/california_housing_train.csv"",header=True,inferSchema=True)
+
+#show first few rows of dataset
+df_Pranav.show()
+
+df_Pranav.createOrReplaceTempView(""california_housing"")
+
+#Example Analysis 1: Calculate average house value by median income bracket
+result1_Pranav=spark.sql(""""""
+select median_income,avg(median_house_value) as avg_house_value
+from california_housing
+group by median_income
+order by median_income
+"""""")
+result1_Pranav.show()
+
+#Example Analysis 2: Find the maximum and minimum house values in each housing block
+result2_Pranav=spark.sql(""""""
+select longitude,latitude,max(median_house_value) as max_house_value,
+min(median_house_value) as min_house_value
+from california_housing
+group by longitude,latitude
+order by max_house_value desc
+limit 10
+"""""")
+result2_Pranav.show()
+
+#Example Analysis 3: Determine the average house value for houses older than 50 years
+result3_Pranav=spark.sql(""""""
+select avg(median_house_value) as avg_old_house_value
+from california_housing
+where housing_median_age>50
+"""""")
+result3_Pranav.show()
+
+#stop spark session
+spark.stop()
+
+from pyspark.sql import SparkSession
+
+# Initialize Spark Session
+spark = SparkSession.builder.appName(""California Housing Analysis Advance"").getOrCreate()
+
+df_Pranav=spark.read.csv(""/content/sample_data/california_housing_train.csv"",header=True,inferSchema=True)
+
+# Register DataFrame as Temp Table
+df_Pranav.createOrReplaceTempView(""california_housing"")
+
+# 1) Average House Value by Proximity to Ocean (Based on Longitude)
+result1_Pranav= spark.sql(""""""
+    SELECT CASE
+               WHEN longitude < -122 THEN 'Near Ocean'
+               ELSE 'Far from Ocean'
+           END as proximity_to_ocean,
+           AVG(median_house_value) as avg_house_value
+    FROM california_housing
+    GROUP BY proximity_to_ocean
+"""""")
+result1_Pranav.show()
+
+# 2) Average Number of Rooms by Age of Housing
+result2_Pranav= spark.sql(""""""
+    SELECT housing_median_age,
+           AVG(total_rooms) as avg_rooms
+    FROM california_housing
+    GROUP BY housing_median_age
+    ORDER BY housing_median_age
+"""""")
+result2_Pranav.show()
+
+# 3) Top 10 locations with the highest median income
+result3_Pranav=spark.sql(""""""
+select longitude,latitude,median_income
+from california_housing
+order by median_income desc
+limit 10
+"""""")
+result3_Pranav.show()
+
+# 4) Relationsip between population and house value (correlation analysis)
+result4_Pranav=spark.sql(""""""
+select population,median_house_value
+from california_housing
+"""""")
+result4_Pranav.corr(""population"",""median_house_value"")
+
+# 5) Average house value by income level(low,medium,high)
+result5_Pranav=spark.sql(""""""
+select case
+when median_income<2.5 then ""low income""
+when median_income between 2.5 and 4.5 then ""medium income""
+else ""high income""
+end as income_level,
+avg(median_house_value) as avg_house_value
+from california_housing
+group by income_level
+"""""")
+result5_Pranav.show()
+
+# 6) Number of houses in different age groups
+result6_Pranav=spark.sql(""""""
+select case
+when housing_median_age<20 then 'New'
+when housing_median_age between 20 and 40 then 'Middle-aged'
+else 'old'
+end as age_group,
+count(*) as house_count
+from california_housing
+group by age_group
+order by house_count desc
+"""""")
+result6_Pranav.show()
+
+# 7) Average number of bedrooms per house
+result7_Pranav=spark.sql(""""""
+select avg(total_bedrooms/households) as avg_bedrooms_per_house
+from california_housing
+"""""")
+result7_Pranav.show()
+
+# 8) Median house value by latitude and longitude
+result8_Pranav=spark.sql(""""""
+select latitude,longitude,
+percentile_approx(median_house_value,0.5) as median_value
+from california_housing
+group by latitude,longitude
+order by median_value desc
+limit 10
+"""""")
+result8_Pranav.show()
+
+# 9) Households with more than 4 persons per household
+result9_Pranav=spark.sql(""""""
+select count(*) as large_households
+from california_housing
+where population/households>4
+"""""")
+result9_Pranav.show()
+
+# 10) Areas with the highest house density (rooms per area)
+result10_Pranav=spark.sql(""""""
+select latitude,longitude,(total_rooms/housing_median_age) as room_density
+from california_housing
+order by room_density desc
+limit 10
+"""""")
+result10_Pranav.show()
+
+#stop
+spark.stop()"
+10,139,80,0,0,27.1,1.441,57,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac multilevel hierarchical package P4
+
+object Multiple_Level_Inheritance {
+  trait a {
+    var i: Int = 10
+    var name: String = ""Apples""
+  }
+
+  trait b extends a {
+    var cost:Int=25
+    def print(): Unit = {
+      println(""Name of Fruit:- "" + name)
+
+    }
+  }
+
+  trait c extends b {
+    def print()
+    def print1(): Unit = {
+      println(""Quantity:-"" + i)
+      println(""Cost:- ""+cost)
+    }
+  }
+
+
+
+  def main(args: Array[String]): Unit = {
+    var x = new c{}
+    x.print()
+    x.print1()
+
+  }
+
+}
+
+
+
+package P4
+
+object Hierarchical {
+  class a{
+    var i:Int=10
+    var name:String=""Apples""
+  }
+
+  class b extends a{
+    def print(): Unit ={
+      println(""Name of Fruit:- ""+name)
+    }
+  }
+
+  class c extends a{
+    def print1(): Unit ={
+      println(""Quantity:-""+i)
+    }
+  }
+
+  def main(args:Array[String]): Unit ={
+    var x=new b()
+    var y=new c()
+    x.print()
+    y.print1()
+  }
+
+}
+
+","prac feature selection
+!pip install pyspark
+
+from pyspark.sql import SparkSession
+from pyspark.ml.feature import StringIndexer, OneHotEncoder,StandardScaler,VectorAssembler,ChiSqSelector
+from pyspark.ml import Pipeline
+from pyspark.sql.functions import col
+
+#create a spark session
+spark=SparkSession.builder.appName(""BoustonHousingFeatureEngineering"").getOrCreate()
+
+##1. Load the dataset into Pyspark
+#Assume we have a csv file with headers
+data_Pranav=spark.read.csv(""/content/HousingData.csv"",header=True,inferSchema=True)
+#Print Schema
+data_Pranav.printSchema()
+
+#define categorical and numerical columns
+categorical_cols_Pranav=[""CHAS"",""RAD""]
+numerical_cols_Pranav=[""CRIM"",""ZN"",""INDUS"",""NOX"",""RM"",""AGE"",""DIS"",""TAX"",""PTRATIO"",""B"",""LSTAT""]
+
+#import double type
+from pyspark.sql.types import DoubleType
+
+# 2. Handle missing values and ocnvert to appropriate types
+for col_name in numerical_cols_Pranav+[""MEDV""]:
+  data_Pranav=data_Pranav.withColumn(col_name,col(col_name).cast(DoubleType()))
+
+#Use imputer to handle nan values in numerical columns
+from pyspark.ml.feature import Imputer
+imputer_Pranav=Imputer(inputCols=numerical_cols_Pranav,outputCols=numerical_cols_Pranav)
+imputer_Pranav.setStrategy(""mean"")
+
+# 3. Handle categorical features
+# For categorical columns, replace NaN with a placeholder value before indexing
+from pyspark.sql.functions import when, col
+for cat_col in categorical_cols_Pranav:
+    data_Pranav = data_Pranav.withColumn(cat_col, when(col(cat_col).isNull(), ""Unknown"").otherwise(col(cat_col)))
+
+indexers = [StringIndexer(inputCol=col, outputCol=f""{col}_indexed"", handleInvalid=""keep"") for col in categorical_cols_Pranav]
+encoders = [OneHotEncoder(inputCol=f""{col}_indexed"", outputCol=f""{col}_encoded"") for col in categorical_cols_Pranav]
+
+# 4. Scale numerical features
+assembler_num = VectorAssembler(inputCols=numerical_cols_Pranav, outputCol=""num_features"")
+scaler = StandardScaler(inputCol=""num_features"", outputCol=""scaled_num_features"", withStd=True, withMean=True)
+
+# 5. Combine features
+encoded_cols=[f""{col}_encoded"" for col in categorical_cols_Pranav]
+assembler=VectorAssembler(inputCols=encoded_cols+[""scaled_num_features""],outputCol=""features"")
+
+# 6. Perform feature selection
+median_medv_Pranav=data_Pranav.approxQuantile(""MEDV"",[0.5],0.01)[0]
+data_Pranav=data_Pranav.withColumn(""label"",(col(""MEDV"")>median_medv_Pranav).cast(""double""))
+selector=ChiSqSelector(numTopFeatures=10,featuresCol=""features"",outputCol=""selected_features"",labelCol=""label"")
+
+# Create and fit the pipeline
+pipeline=Pipeline(stages=[imputer_Pranav]+indexers+encoders+[assembler_num,scaler,assembler,selector])
+try:
+  model_Pranav=pipeline.fit(data_Pranav)
+  result_Pranav=model_Pranav.transform(data_Pranav)
+
+  #show result
+  result_Pranav.select(""selected_features"",""label"").show(5,truncate=False)
+
+  #get feature importances
+  feature_importances_Pranav=model_Pranav.stages[-1].selectedFeatures
+  print(""Selected feature indices:"",feature_importances_Pranav)
+
+except Exception as e:
+  print(f""An error occured:{str(e)}"")
+
+#Stop the spark session
+spark.stop()
+"
+1,189,60,23,846,30.1,0.398,59,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac hybrid package P4
+
+object hybrid {
+  trait a {
+    var i: Int = 10
+    var name: String = ""Apples""
+  }
+
+  trait b extends a {
+    def print(): Unit = {
+      println(""Name of Fruit:- "" + name)
+    }
+  }
+
+  trait c extends a {
+    def print1(): Unit = {
+      println(""Quantity:-"" + i)
+    }
+  }
+  trait d extends b with c{
+    var cost:Int=25
+    def print()
+    def print1()
+    def print2(): Unit ={
+      println(""Cost:- ""+cost)
+    }
+  }
+
+  def main(args: Array[String]): Unit = {
+    var x = new d{}
+    x.print()
+    x.print1()
+    x.print2()
+
+  }
+
+}
+","prac word and temp !pip install pyspark
+
+from pyspark import SparkConf,SparkContext
+
+conf=SparkConf().setAppName(""PySparkWordCount_Pranav"").setMaster(""local"")
+sc=SparkContext(conf=conf)
+
+data_Pranav=['hello world','hello spark','hello RDD','hello PySpark','Pranav']
+rdd_Pranav=sc.parallelize(data_Pranav)
+
+words_rdd_Pranav=rdd_Pranav.flatMap(lambda sentence:sentence.split("" ""))
+words_pairs_rdd_Pranav=words_rdd_Pranav.map(lambda word:(word,1))
+
+words_counts_rdd_Pranav=words_pairs_rdd_Pranav.reduceByKey(lambda a,b:a+b)
+words_counts_Pranav=words_counts_rdd_Pranav.collect()
+
+for word,count in words_counts_Pranav:
+  print(f""{word}:{count}"")
+
+sc.stop()
+!pip install pyspark
+
+from pyspark import SparkConf,SparkContext
+
+conf=SparkConf().setAppName('PySparkTemperatureConversion_Pranav').setMaster('local')
+sc=SparkContext(conf=conf)
+
+celsius_temps_Pranav=[0,20,30,40,100]
+rdd_Pranav=sc.parallelize(celsius_temps_Pranav)
+
+fahrenheit_rdd_Pranav=rdd_Pranav.map(lambda c:(c,(c*9/5)+32))
+fahrenheit_temps_Pranav=fahrenheit_rdd_Pranav.collect()
+
+for c,f in fahrenheit_temps_Pranav:
+  print(f""{c} C = {f} F"")
+
+sc.stop()
+"
+5,166,72,19,175,25.8,0.587,51,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"prac exception handling package exception_handling
+
+import java.io.IOException
+object exception {
+def main(args: Array[String]): Unit = {
+try {
+val f = 15 / 0
+} catch {
+case ex: ArithmeticException => {
+println(""Arithmetic Exception, cannot be divided by 0"")
+}
+} finally {
+println(""This is final block."")
+}
+val a=10
+if (a < 20)
+throw new ArithmeticException(""Value less than 20, Rejected"")
+else println(""Accepted"")
+}
+}","prac iris wine !pip install pyspark
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+spark=SparkSession.builder.appName('IrisDatasetExample').getOrCreate()
+iris_data_Pranav=[
+    (5.1,3.5,1.4,0.2,'Iris-setosa'),
+    (4.9,3.0,1.4,0.2,'Iris-setosa'),
+    (4.7,3.2,1.3,0.2,'Iris-setosa'),
+    (7.0,3.2,4.7,1.4,'Iris-versicolor'),
+    (6.4,3.2,4.5,1.5,'Iris-versicolor'),
+    (6.9,3.1,4.9,1.5,'Iris-versicolor'),
+    (5.9,3.0,5.1,1.8,'Iris-virginica'),
+    (6.8,3.0,5.5,2.1,'Iris-virginica'),
+    (6.7,3.1,5.6,2.4,'Iris-virginica')
+]
+columns=['sepal_length','sepal_width','petal_length','petal_width','species']
+
+df_Pranav=spark.createDataFrame(data=iris_data_Pranav,schema=columns)
+df_Pranav.show()
+
+df_filtered_Pranav = df_Pranav.filter(col(""species"") == ""Iris-setosa"")
+df_filtered_Pranav.show()
+spark.stop() 
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import col
+spark = SparkSession.builder.appName('WineQualityAnalyzer').getOrCreate()
+
+spark
+
+df_Pranav=spark.read.format('csv').option('header','true').option('inferSchema','true').load('/content/winequality-red.csv')
+df_Pranav.show(5)
+
+df_filtered_Pranav = df_Pranav.filter(col(""quality"") >= 7)
+df_filtered_Pranav.show()
+spark.stop()"
+7,100,0,0,0,30,0.484,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,118,84,47,230,45.8,0.551,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,107,74,0,0,29.6,0.254,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,103,30,38,83,43.3,0.183,33,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,115,70,30,96,34.6,0.529,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,126,88,41,235,39.3,0.704,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,99,84,0,0,35.4,0.388,50,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,196,90,0,0,39.8,0.451,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,119,80,35,0,29,0.263,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,143,94,33,146,36.6,0.254,51,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,125,70,26,115,31.1,0.205,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,147,76,0,0,39.4,0.257,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,97,66,15,140,23.2,0.487,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,145,82,19,110,22.2,0.245,57,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,117,92,0,0,34.1,0.337,38,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,109,75,26,0,36,0.546,60,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,158,76,36,245,31.6,0.851,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,88,58,11,54,24.8,0.267,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,92,92,0,0,19.9,0.188,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,122,78,31,0,27.6,0.512,45,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,103,60,33,192,24,0.966,33,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,138,76,0,0,33.2,0.42,35,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,102,76,37,0,32.9,0.665,46,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,90,68,42,0,38.2,0.503,27,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,111,72,47,207,37.1,1.39,56,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,180,64,25,70,34,0.271,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,133,84,0,0,40.2,0.696,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,106,92,18,0,22.7,0.235,48,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,171,110,24,240,45.4,0.721,54,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,159,64,0,0,27.4,0.294,40,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,180,66,39,0,42,1.893,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,146,56,0,0,29.7,0.564,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,71,70,27,0,28,0.586,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,103,66,32,0,39.1,0.344,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,105,0,0,0,0,0.305,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,103,80,11,82,19.4,0.491,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,101,50,15,36,24.2,0.526,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,88,66,21,23,24.4,0.342,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,176,90,34,300,33.7,0.467,58,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,150,66,42,342,34.7,0.718,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,73,50,10,0,23,0.248,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,187,68,39,304,37.7,0.254,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,100,88,60,110,46.8,0.962,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,146,82,0,0,40.5,1.781,44,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,105,64,41,142,41.5,0.173,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,84,0,0,0,0,0.304,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,133,72,0,0,32.9,0.27,39,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,44,62,0,0,25,0.587,36,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,141,58,34,128,25.4,0.699,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,114,66,0,0,32.8,0.258,42,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,99,74,27,0,29,0.203,32,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,109,88,30,0,32.5,0.855,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,109,92,0,0,42.7,0.845,54,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,95,66,13,38,19.6,0.334,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,146,85,27,100,28.9,0.189,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,100,66,20,90,32.9,0.867,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,139,64,35,140,28.6,0.411,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,126,90,0,0,43.4,0.583,42,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,129,86,20,270,35.1,0.231,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,79,75,30,0,32,0.396,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,0,48,20,0,24.7,0.14,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,62,78,0,0,32.6,0.391,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,95,72,33,0,37.7,0.37,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,131,0,0,0,43.2,0.27,26,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,112,66,22,0,25,0.307,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,113,44,13,0,22.4,0.14,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,74,0,0,0,0,0.102,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,83,78,26,71,29.3,0.767,36,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,101,65,28,0,24.6,0.237,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,137,108,0,0,48.8,0.227,37,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,110,74,29,125,32.4,0.698,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,106,72,54,0,36.6,0.178,45,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,100,68,25,71,38.5,0.324,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+15,136,70,32,110,37.1,0.153,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,107,68,19,0,26.5,0.165,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,80,55,0,0,19.1,0.258,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,123,80,15,176,32,0.443,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,81,78,40,48,46.7,0.261,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,134,72,0,0,23.8,0.277,60,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,142,82,18,64,24.7,0.761,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,144,72,27,228,33.9,0.255,40,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,92,62,28,0,31.6,0.13,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,71,48,18,76,20.4,0.323,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,93,50,30,64,28.7,0.356,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,122,90,51,220,49.7,0.325,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,163,72,0,0,39,1.222,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,151,60,0,0,26.1,0.179,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,125,96,0,0,22.5,0.262,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,81,72,18,40,26.6,0.283,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,85,65,0,0,39.6,0.93,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,126,56,29,152,28.7,0.801,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,96,122,0,0,22.4,0.207,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,144,58,28,140,29.5,0.287,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,83,58,31,18,34.3,0.336,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,95,85,25,36,37.4,0.247,24,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,171,72,33,135,33.3,0.199,24,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,155,62,26,495,34,0.543,46,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,89,76,34,37,31.2,0.192,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,76,62,0,0,34,0.391,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,160,54,32,175,30.5,0.588,39,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,146,92,0,0,31.2,0.539,61,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,124,74,0,0,34,0.22,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,78,48,0,0,33.7,0.654,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,97,60,23,0,28.2,0.443,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,99,76,15,51,23.2,0.223,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,162,76,56,100,53.2,0.759,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,111,64,39,0,34.2,0.26,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,107,74,30,100,33.6,0.404,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,132,80,0,0,26.8,0.186,69,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,113,76,0,0,33.3,0.278,23,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,88,30,42,99,55,0.496,26,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,120,70,30,135,42.9,0.452,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,118,58,36,94,33.3,0.261,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,117,88,24,145,34.5,0.403,40,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,105,84,0,0,27.9,0.741,62,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,173,70,14,168,29.7,0.361,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,122,56,0,0,33.3,1.114,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,170,64,37,225,34.5,0.356,30,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,84,74,31,0,38.3,0.457,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,96,68,13,49,21.1,0.647,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,125,60,20,140,33.8,0.088,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,100,70,26,50,30.8,0.597,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,93,60,25,92,28.7,0.532,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,129,80,0,0,31.2,0.703,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,105,72,29,325,36.9,0.159,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,128,78,0,0,21.1,0.268,55,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,106,82,30,0,39.5,0.286,38,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,108,52,26,63,32.5,0.318,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,108,66,0,0,32.4,0.272,42,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,154,62,31,284,32.8,0.237,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,102,75,23,0,0,0.572,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,57,80,37,0,32.8,0.096,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,106,64,35,119,30.5,1.4,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,147,78,0,0,33.7,0.218,65,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,90,70,17,0,27.3,0.085,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,136,74,50,204,37.4,0.399,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,114,65,0,0,21.9,0.432,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,156,86,28,155,34.3,1.189,42,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,153,82,42,485,40.6,0.687,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,188,78,0,0,47.9,0.137,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,152,88,44,0,50,0.337,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,99,52,15,94,24.6,0.637,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,109,56,21,135,25.2,0.833,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,88,74,19,53,29,0.229,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+17,163,72,41,114,40.9,0.817,47,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,151,90,38,0,29.7,0.294,36,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,102,74,40,105,37.2,0.204,45,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,114,80,34,285,44.2,0.167,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,100,64,23,0,29.7,0.368,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,131,88,0,0,31.6,0.743,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,104,74,18,156,29.9,0.722,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,148,66,25,0,32.5,0.256,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,120,68,0,0,29.6,0.709,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,110,66,0,0,31.9,0.471,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,111,90,12,78,28.4,0.495,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,102,82,0,0,30.8,0.18,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,134,70,23,130,35.4,0.542,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,87,0,23,0,28.9,0.773,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,79,60,42,48,43.5,0.678,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,75,64,24,55,29.7,0.37,33,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,179,72,42,130,32.7,0.719,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,85,78,0,0,31.2,0.382,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,129,110,46,130,67.1,0.319,26,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,143,78,0,0,45,0.19,47,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,130,82,0,0,39.1,0.956,37,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,87,80,0,0,23.2,0.084,32,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,119,64,18,92,34.9,0.725,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,0,74,20,23,27.7,0.299,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,73,60,0,0,26.8,0.268,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,141,74,0,0,27.6,0.244,40,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,194,68,28,0,35.9,0.745,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,181,68,36,495,30.1,0.615,60,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,128,98,41,58,32,1.321,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,109,76,39,114,27.9,0.64,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,139,80,35,160,31.6,0.361,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,111,62,0,0,22.6,0.142,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,123,70,44,94,33.1,0.374,40,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,159,66,0,0,30.4,0.383,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,135,0,0,0,52.3,0.578,40,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,85,55,20,0,24.4,0.136,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,158,84,41,210,39.4,0.395,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,105,58,0,0,24.3,0.187,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,107,62,13,48,22.9,0.678,23,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,109,64,44,99,34.8,0.905,26,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,148,60,27,318,30.9,0.15,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,113,80,16,0,31,0.874,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,138,82,0,0,40.1,0.236,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,108,68,20,0,27.3,0.787,32,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,99,70,16,44,20.4,0.235,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,103,72,32,190,37.7,0.324,55,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,111,72,28,0,23.9,0.407,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,196,76,29,280,37.5,0.605,57,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,162,104,0,0,37.7,0.151,52,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,96,64,27,87,33.2,0.289,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,184,84,33,0,35.5,0.355,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,81,60,22,0,27.7,0.29,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,147,85,54,0,42.8,0.375,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,179,95,31,0,34.2,0.164,60,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,140,65,26,130,42.6,0.431,24,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,112,82,32,175,34.2,0.26,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,151,70,40,271,41.8,0.742,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,109,62,41,129,35.8,0.514,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,125,68,30,120,30,0.464,32,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,85,74,22,0,29,1.224,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,112,66,0,0,37.8,0.261,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,177,60,29,478,34.6,1.072,21,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,158,90,0,0,31.6,0.805,66,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,119,0,0,0,25.2,0.209,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,142,60,33,190,28.8,0.687,61,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,100,66,15,56,23.6,0.666,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,87,78,27,32,34.6,0.101,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,101,76,0,0,35.7,0.198,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,162,52,38,0,37.2,0.652,24,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,197,70,39,744,36.7,2.329,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,117,80,31,53,45.2,0.089,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,142,86,0,0,44,0.645,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,134,80,37,370,46.2,0.238,46,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,79,80,25,37,25.4,0.583,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,122,68,0,0,35,0.394,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,74,68,28,45,29.7,0.293,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,171,72,0,0,43.6,0.479,26,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,181,84,21,192,35.9,0.586,51,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,179,90,27,0,44.1,0.686,23,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,164,84,21,0,30.8,0.831,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,104,76,0,0,18.4,0.582,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,91,64,24,0,29.2,0.192,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,91,70,32,88,33.1,0.446,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,139,54,0,0,25.6,0.402,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,119,50,22,176,27.1,1.318,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,146,76,35,194,38.2,0.329,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,184,85,15,0,30,1.213,49,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,122,68,0,0,31.2,0.258,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,165,90,33,680,52.3,0.427,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,124,70,33,402,35.4,0.282,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,111,86,19,0,30.1,0.143,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,106,52,0,0,31.2,0.38,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,129,84,0,0,28,0.284,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,90,80,14,55,24.4,0.249,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,86,68,32,0,35.8,0.238,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,92,62,7,258,27.6,0.926,44,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,113,64,35,0,33.6,0.543,21,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,111,56,39,0,30.1,0.557,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,114,68,22,0,28.7,0.092,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,193,50,16,375,25.9,0.655,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,155,76,28,150,33.3,1.353,51,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,191,68,15,130,30.9,0.299,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,141,0,0,0,30,0.761,27,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,95,70,32,0,32.1,0.612,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,142,80,15,0,32.4,0.2,63,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,123,62,0,0,32,0.226,35,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,96,74,18,67,33.6,0.997,43,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,138,0,0,0,36.3,0.933,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,128,64,42,0,40,1.101,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,102,52,0,0,25.1,0.078,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,146,0,0,0,27.5,0.24,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,101,86,37,0,45.6,1.136,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,108,62,32,56,25.2,0.128,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,122,78,0,0,23,0.254,40,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,71,78,50,45,33.2,0.422,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,106,70,0,0,34.2,0.251,52,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,100,70,52,57,40.5,0.677,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,106,60,24,0,26.5,0.296,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,104,64,23,116,27.8,0.454,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,114,74,0,0,24.9,0.744,57,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,108,62,10,278,25.3,0.881,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,146,70,0,0,37.9,0.334,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,129,76,28,122,35.9,0.28,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,133,88,15,155,32.4,0.262,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,161,86,0,0,30.4,0.165,47,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,108,80,0,0,27,0.259,52,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,136,74,26,135,26,0.647,51,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,155,84,44,545,38.7,0.619,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,119,86,39,220,45.6,0.808,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,96,56,17,49,20.8,0.34,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,108,72,43,75,36.1,0.263,33,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,78,88,29,40,36.9,0.434,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,107,62,30,74,36.6,0.757,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,128,78,37,182,43.3,1.224,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,128,48,45,194,40.5,0.613,24,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,161,50,0,0,21.9,0.254,65,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,151,62,31,120,35.5,0.692,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,146,70,38,360,28,0.337,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,126,84,29,215,30.7,0.52,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+14,100,78,25,184,36.6,0.412,46,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,112,72,0,0,23.6,0.84,58,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,167,0,0,0,32.3,0.839,30,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,144,58,33,135,31.6,0.422,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,77,82,41,42,35.8,0.156,35,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,115,98,0,0,52.9,0.209,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,150,76,0,0,21,0.207,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,120,76,37,105,39.7,0.215,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,161,68,23,132,25.5,0.326,47,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,137,68,14,148,24.8,0.143,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,128,68,19,180,30.5,1.391,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,124,68,28,205,32.9,0.875,30,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,80,66,30,0,26.2,0.313,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,106,70,37,148,39.4,0.605,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,155,74,17,96,26.6,0.433,27,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,113,50,10,85,29.5,0.626,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,109,80,31,0,35.9,1.127,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,112,68,22,94,34.1,0.315,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,99,80,11,64,19.3,0.284,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,182,74,0,0,30.5,0.345,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,115,66,39,140,38.1,0.15,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,194,78,0,0,23.5,0.129,59,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,129,60,12,231,27.5,0.527,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,112,74,30,0,31.6,0.197,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,124,70,20,0,27.4,0.254,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,152,90,33,29,26.8,0.731,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,112,75,32,0,35.7,0.148,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,157,72,21,168,25.6,0.123,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,122,64,32,156,35.1,0.692,30,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,179,70,0,0,35.1,0.2,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,102,86,36,120,45.5,0.127,23,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,105,70,32,68,30.8,0.122,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,118,72,19,0,23.1,1.476,46,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,87,58,16,52,32.7,0.166,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,180,0,0,0,43.3,0.282,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,106,80,0,0,23.6,0.137,44,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,95,60,18,58,23.9,0.26,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,165,76,43,255,47.9,0.259,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,117,0,0,0,33.8,0.932,44,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,115,76,0,0,31.2,0.343,44,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,152,78,34,171,34.2,0.893,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,178,84,0,0,39.9,0.331,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,130,70,13,105,25.9,0.472,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,95,74,21,73,25.9,0.673,36,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,0,68,35,0,32,0.389,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,122,86,0,0,34.7,0.29,33,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,95,72,0,0,36.8,0.485,57,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,126,88,36,108,38.5,0.349,49,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,139,46,19,83,28.7,0.654,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,116,0,0,0,23.5,0.187,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,99,62,19,74,21.8,0.279,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,0,80,32,0,41,0.346,37,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,92,80,0,0,42.2,0.237,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,137,84,0,0,31.2,0.252,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,61,82,28,0,34.4,0.243,46,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,90,62,12,43,27.2,0.58,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,90,78,0,0,42.7,0.559,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,165,88,0,0,30.4,0.302,49,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,125,50,40,167,33.3,0.962,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,129,0,30,0,39.9,0.569,44,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,88,74,40,54,35.3,0.378,48,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,196,76,36,249,36.5,0.875,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,189,64,33,325,31.2,0.583,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,158,70,0,0,29.8,0.207,63,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,103,108,37,0,39.2,0.305,65,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,146,78,0,0,38.5,0.52,67,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,147,74,25,293,34.9,0.385,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,99,54,28,83,34,0.499,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,124,72,0,0,27.6,0.368,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,101,64,17,0,21,0.252,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,81,86,16,66,27.5,0.306,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,133,102,28,140,32.8,0.234,45,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,173,82,48,465,38.4,2.137,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,118,64,23,89,0,1.731,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,84,64,22,66,35.8,0.545,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,105,58,40,94,34.9,0.225,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,122,52,43,158,36.2,0.816,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,140,82,43,325,39.2,0.528,58,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,98,82,15,84,25.2,0.299,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,87,60,37,75,37.2,0.509,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,156,75,0,0,48.3,0.238,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,93,100,39,72,43.4,1.021,35,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,107,72,30,82,30.8,0.821,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,105,68,22,0,20,0.236,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,109,60,8,182,25.4,0.947,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,90,62,18,59,25.1,1.268,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,125,70,24,110,24.3,0.221,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,119,54,13,50,22.3,0.205,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,116,74,29,0,32.3,0.66,35,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,105,100,36,0,43.3,0.239,45,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,144,82,26,285,32,0.452,58,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,100,68,23,81,31.6,0.949,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,100,66,29,196,32,0.444,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,166,76,0,0,45.7,0.34,27,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,131,64,14,415,23.7,0.389,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,116,72,12,87,22.1,0.463,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,158,78,0,0,32.9,0.803,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,127,58,24,275,27.7,1.6,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,96,56,34,115,24.7,0.944,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,131,66,40,0,34.3,0.196,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,82,70,0,0,21.1,0.389,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,193,70,31,0,34.9,0.241,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,95,64,0,0,32,0.161,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,137,61,0,0,24.2,0.151,55,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,136,84,41,88,35,0.286,35,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,72,78,25,0,31.6,0.28,38,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,168,64,0,0,32.9,0.135,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,123,48,32,165,42.1,0.52,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,115,72,0,0,28.9,0.376,46,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,101,62,0,0,21.9,0.336,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,197,74,0,0,25.9,1.191,39,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,172,68,49,579,42.4,0.702,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,102,90,39,0,35.7,0.674,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,112,72,30,176,34.4,0.528,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,143,84,23,310,42.4,1.076,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,143,74,22,61,26.2,0.256,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,138,60,35,167,34.6,0.534,21,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,173,84,33,474,35.7,0.258,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,97,68,21,0,27.2,1.095,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,144,82,32,0,38.5,0.554,37,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,83,68,0,0,18.2,0.624,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,129,64,29,115,26.4,0.219,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,119,88,41,170,45.3,0.507,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,94,68,18,76,26,0.561,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,102,64,46,78,40.6,0.496,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,115,64,22,0,30.8,0.421,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,151,78,32,210,42.9,0.516,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,184,78,39,277,37,0.264,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,94,0,0,0,0,0.256,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,181,64,30,180,34.1,0.328,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,135,94,46,145,40.6,0.284,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,95,82,25,180,35,0.233,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,99,0,0,0,22.2,0.108,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,89,74,16,85,30.4,0.551,38,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,80,74,11,60,30,0.527,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,139,75,0,0,25.6,0.167,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,90,68,8,0,24.5,1.138,36,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,141,0,0,0,42.4,0.205,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,140,85,33,0,37.4,0.244,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,147,75,0,0,29.9,0.434,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,97,70,15,0,18.2,0.147,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,107,88,0,0,36.8,0.727,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,189,104,25,0,34.3,0.435,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,83,66,23,50,32.2,0.497,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,117,64,27,120,33.2,0.23,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,108,70,0,0,30.5,0.955,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,117,62,12,0,29.7,0.38,30,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,180,78,63,14,59.4,2.42,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,100,72,12,70,25.3,0.658,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,95,80,45,92,36.5,0.33,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,104,64,37,64,33.6,0.51,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,120,74,18,63,30.5,0.285,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,82,64,13,95,21.2,0.415,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,134,70,0,0,28.9,0.542,23,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,91,68,32,210,39.9,0.381,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,119,0,0,0,19.6,0.832,72,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,100,54,28,105,37.8,0.498,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+14,175,62,30,0,33.6,0.212,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,135,54,0,0,26.7,0.687,62,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,86,68,28,71,30.2,0.364,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,148,84,48,237,37.6,1.001,51,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,134,74,33,60,25.9,0.46,81,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,120,72,22,56,20.8,0.733,48,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,71,62,0,0,21.8,0.416,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,74,70,40,49,35.3,0.705,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,88,78,30,0,27.6,0.258,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,115,98,0,0,24,1.022,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,124,56,13,105,21.8,0.452,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,74,52,10,36,27.8,0.269,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,97,64,36,100,36.8,0.6,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,120,0,0,0,30,0.183,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,154,78,41,140,46.1,0.571,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,144,82,40,0,41.3,0.607,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,137,70,38,0,33.2,0.17,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,119,66,27,0,38.8,0.259,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,136,90,0,0,29.9,0.21,50,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,114,64,0,0,28.9,0.126,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,137,84,27,0,27.3,0.231,59,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,105,80,45,191,33.7,0.711,29,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,114,76,17,110,23.8,0.466,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,126,74,38,75,25.9,0.162,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,132,86,31,0,28,0.419,63,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,158,70,30,328,35.5,0.344,35,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,123,88,37,0,35.2,0.197,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,85,58,22,49,27.8,0.306,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,84,82,31,125,38.2,0.233,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,145,0,0,0,44.2,0.63,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,135,68,42,250,42.3,0.365,24,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,139,62,41,480,40.7,0.536,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,173,78,32,265,46.5,1.159,58,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,99,72,17,0,25.6,0.294,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,194,80,0,0,26.1,0.551,67,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,83,65,28,66,36.8,0.629,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,89,90,30,0,33.5,0.292,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,99,68,38,0,32.8,0.145,33,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,125,70,18,122,28.9,1.144,45,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,80,0,0,0,0,0.174,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,166,74,0,0,26.6,0.304,66,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,110,68,0,0,26,0.292,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,81,72,15,76,30.1,0.547,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,195,70,33,145,25.1,0.163,55,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,154,74,32,193,29.3,0.839,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,117,90,19,71,25.2,0.313,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,84,72,32,0,37.2,0.267,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,0,68,41,0,39,0.727,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,94,64,25,79,33.3,0.738,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,96,78,39,0,37.3,0.238,40,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,75,82,0,0,33.3,0.263,38,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,180,90,26,90,36.5,0.314,35,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,130,60,23,170,28.6,0.692,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,84,50,23,76,30.4,0.968,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,120,78,0,0,25,0.409,64,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,84,72,31,0,29.7,0.297,46,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,139,62,17,210,22.1,0.207,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,91,68,0,0,24.2,0.2,58,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,91,62,0,0,27.3,0.525,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,99,54,19,86,25.6,0.154,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,163,70,18,105,31.6,0.268,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,145,88,34,165,30.3,0.771,53,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,125,86,0,0,37.6,0.304,51,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,76,60,0,0,32.8,0.18,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,129,90,7,326,19.6,0.582,60,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,68,70,32,66,25,0.187,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,124,80,33,130,33.2,0.305,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,114,0,0,0,0,0.189,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,130,70,0,0,34.2,0.652,45,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,125,58,0,0,31.6,0.151,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,87,60,18,0,21.8,0.444,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,97,64,19,82,18.2,0.299,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,116,74,15,105,26.3,0.107,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,117,66,31,188,30.8,0.493,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,111,65,0,0,24.6,0.66,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,122,60,18,106,29.8,0.717,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,107,76,0,0,45.3,0.686,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,86,66,52,65,41.3,0.917,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,91,0,0,0,29.8,0.501,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,77,56,30,56,33.3,1.251,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,132,0,0,0,32.9,0.302,23,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,105,90,0,0,29.6,0.197,46,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,57,60,0,0,21.7,0.735,67,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,127,80,37,210,36.3,0.804,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,129,92,49,155,36.4,0.968,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,100,74,40,215,39.4,0.661,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,128,72,25,190,32.4,0.549,27,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,90,85,32,0,34.9,0.825,56,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,84,90,23,56,39.5,0.159,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,88,78,29,76,32,0.365,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,186,90,35,225,34.5,0.423,37,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,187,76,27,207,43.6,1.034,53,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,131,68,21,166,33.1,0.16,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,164,82,43,67,32.8,0.341,50,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,189,110,31,0,28.5,0.68,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,116,70,28,0,27.4,0.204,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,84,68,30,106,31.9,0.591,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,114,88,0,0,27.8,0.247,66,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,88,62,24,44,29.9,0.422,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,84,64,23,115,36.9,0.471,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,124,70,33,215,25.5,0.161,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,97,70,40,0,38.1,0.218,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,110,76,0,0,27.8,0.237,58,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,103,68,40,0,46.2,0.126,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,85,74,0,0,30.1,0.3,35,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,125,76,0,0,33.8,0.121,54,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,198,66,32,274,41.3,0.502,28,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,87,68,34,77,37.6,0.401,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,99,60,19,54,26.9,0.497,32,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,91,80,0,0,32.4,0.601,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,95,54,14,88,26.1,0.748,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,99,72,30,18,38.6,0.412,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,92,62,32,126,32,0.085,46,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,154,72,29,126,31.3,0.338,37,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,121,66,30,165,34.3,0.203,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,78,70,0,0,32.5,0.27,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,130,96,0,0,22.6,0.268,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,111,58,31,44,29.5,0.43,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,98,60,17,120,34.7,0.198,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,143,86,30,330,30.1,0.892,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,119,44,47,63,35.5,0.28,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,108,44,20,130,24,0.813,35,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,118,80,0,0,42.9,0.693,21,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,133,68,0,0,27,0.245,36,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,197,70,99,0,34.7,0.575,62,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,151,90,46,0,42.1,0.371,21,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,109,60,27,0,25,0.206,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,121,78,17,0,26.5,0.259,62,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,100,76,0,0,38.7,0.19,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,124,76,24,600,28.7,0.687,52,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,93,56,11,0,22.5,0.417,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,143,66,0,0,34.9,0.129,41,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,103,66,0,0,24.3,0.249,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,176,86,27,156,33.3,1.154,52,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,73,0,0,0,21.1,0.342,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,111,84,40,0,46.8,0.925,45,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,112,78,50,140,39.4,0.175,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,132,80,0,0,34.4,0.402,44,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,82,52,22,115,28.5,1.699,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,123,72,45,230,33.6,0.733,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,188,82,14,185,32,0.682,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,67,76,0,0,45.3,0.194,46,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,89,24,19,25,27.8,0.559,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,173,74,0,0,36.8,0.088,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,109,38,18,120,23.1,0.407,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,108,88,19,0,27.1,0.4,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,96,0,0,0,23.7,0.19,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,124,74,36,0,27.8,0.1,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,150,78,29,126,35.2,0.692,54,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,183,0,0,0,28.4,0.212,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,124,60,32,0,35.8,0.514,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,181,78,42,293,40,1.258,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,92,62,25,41,19.5,0.482,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,152,82,39,272,41.5,0.27,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,111,62,13,182,24,0.138,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,106,54,21,158,30.9,0.292,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,174,58,22,194,32.9,0.593,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,168,88,42,321,38.2,0.787,40,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,105,80,28,0,32.5,0.878,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,138,74,26,144,36.1,0.557,50,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,106,72,0,0,25.8,0.207,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,117,96,0,0,28.7,0.157,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,68,62,13,15,20.1,0.257,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,112,82,24,0,28.2,1.282,50,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,119,0,0,0,32.4,0.141,24,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,112,86,42,160,38.4,0.246,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,92,76,20,0,24.2,1.698,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,183,94,0,0,40.8,1.461,45,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,94,70,27,115,43.5,0.347,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,108,64,0,0,30.8,0.158,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,90,88,47,54,37.7,0.362,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,125,68,0,0,24.7,0.206,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,132,78,0,0,32.4,0.393,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,128,80,0,0,34.6,0.144,45,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,94,65,22,0,24.7,0.148,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,114,64,0,0,27.4,0.732,34,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,102,78,40,90,34.5,0.238,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,111,60,0,0,26.2,0.343,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,128,82,17,183,27.5,0.115,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,92,62,0,0,25.9,0.167,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,104,72,0,0,31.2,0.465,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,104,74,0,0,28.8,0.153,48,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,94,76,18,66,31.6,0.649,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,97,76,32,91,40.9,0.871,32,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,100,74,12,46,19.5,0.149,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,102,86,17,105,29.3,0.695,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,128,70,0,0,34.3,0.303,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,147,80,0,0,29.5,0.178,50,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,90,0,0,0,28,0.61,31,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,103,72,30,152,27.6,0.73,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,157,74,35,440,39.4,0.134,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,167,74,17,144,23.4,0.447,33,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,179,50,36,159,37.8,0.455,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,136,84,35,130,28.3,0.26,42,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,107,60,25,0,26.4,0.133,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,91,54,25,100,25.2,0.234,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,117,60,23,106,33.8,0.466,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,123,74,40,77,34.1,0.269,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,120,54,0,0,26.8,0.455,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,106,70,28,135,34.2,0.142,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,155,52,27,540,38.7,0.24,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,101,58,35,90,21.8,0.155,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,120,80,48,200,38.9,1.162,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,127,106,0,0,39,0.19,51,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,80,82,31,70,34.2,1.292,27,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,162,84,0,0,27.7,0.182,54,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,199,76,43,0,42.9,1.394,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,167,106,46,231,37.6,0.165,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,145,80,46,130,37.9,0.637,40,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,115,60,39,0,33.7,0.245,40,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,112,80,45,132,34.8,0.217,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,145,82,18,0,32.5,0.235,70,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,111,70,27,0,27.5,0.141,40,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,98,58,33,190,34,0.43,43,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,154,78,30,100,30.9,0.164,45,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,165,68,26,168,33.6,0.631,49,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,99,58,10,0,25.4,0.551,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,68,106,23,49,35.5,0.285,47,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,123,100,35,240,57.3,0.88,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,91,82,0,0,35.6,0.587,68,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,195,70,0,0,30.9,0.328,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,156,86,0,0,24.8,0.23,53,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,93,60,0,0,35.3,0.263,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,121,52,0,0,36,0.127,25,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,101,58,17,265,24.2,0.614,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,56,56,28,45,24.2,0.332,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,162,76,36,0,49.6,0.364,26,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,95,64,39,105,44.6,0.366,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,125,80,0,0,32.3,0.536,27,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,136,82,0,0,0,0.64,69,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,129,74,26,205,33.2,0.591,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,130,64,0,0,23.1,0.314,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,107,50,19,0,28.3,0.181,29,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,140,74,26,180,24.1,0.828,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,144,82,46,180,46.1,0.335,46,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,107,80,0,0,24.6,0.856,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,158,114,0,0,42.3,0.257,44,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,121,70,32,95,39.1,0.886,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,129,68,49,125,38.5,0.439,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,90,60,0,0,23.5,0.191,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,142,90,24,480,30.4,0.128,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,169,74,19,125,29.9,0.268,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,99,0,0,0,25,0.253,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,127,88,11,155,34.5,0.598,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,118,70,0,0,44.5,0.904,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,122,76,27,200,35.9,0.483,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,125,78,31,0,27.6,0.565,49,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,168,88,29,0,35,0.905,52,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,129,0,0,0,38.5,0.304,41,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,110,76,20,100,28.4,0.118,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,80,80,36,0,39.8,0.177,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,115,0,0,0,0,0.261,30,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,127,46,21,335,34.4,0.176,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,164,78,0,0,32.8,0.148,45,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,93,64,32,160,38,0.674,23,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,158,64,13,387,31.2,0.295,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,126,78,27,22,29.6,0.439,40,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,129,62,36,0,41.2,0.441,38,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,134,58,20,291,26.4,0.352,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,102,74,0,0,29.5,0.121,32,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,187,50,33,392,33.9,0.826,34,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,173,78,39,185,33.8,0.97,31,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,94,72,18,0,23.1,0.595,56,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,108,60,46,178,35.5,0.415,24,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,97,76,27,0,35.6,0.378,52,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,83,86,19,0,29.3,0.317,34,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,114,66,36,200,38.1,0.289,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,149,68,29,127,29.3,0.349,42,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,117,86,30,105,39.1,0.251,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,111,94,0,0,32.8,0.265,45,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,112,78,40,0,39.4,0.236,38,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,116,78,29,180,36.1,0.496,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,141,84,26,0,32.4,0.433,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,175,88,0,0,22.9,0.326,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,92,52,0,0,30.1,0.141,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,130,78,23,79,28.4,0.323,34,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,120,86,0,0,28.4,0.259,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,174,88,37,120,44.5,0.646,24,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,106,56,27,165,29,0.426,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,105,75,0,0,23.3,0.56,53,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,95,60,32,0,35.4,0.284,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,126,86,27,120,27.4,0.515,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,65,72,23,0,32,0.6,42,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,99,60,17,160,36.6,0.453,21,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,102,74,0,0,39.5,0.293,42,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+11,120,80,37,150,42.3,0.785,48,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,102,44,20,94,30.8,0.4,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,109,58,18,116,28.5,0.219,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,140,94,0,0,32.7,0.734,45,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+13,153,88,37,140,40.6,1.174,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+12,100,84,33,105,30,0.488,46,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,147,94,41,0,49.3,0.358,27,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,81,74,41,57,46.3,1.096,32,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,187,70,22,200,36.4,0.408,36,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,162,62,0,0,24.3,0.178,50,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+4,136,70,0,0,31.2,1.182,22,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,121,78,39,74,39,0.261,28,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+3,108,62,24,0,26,0.223,25,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,181,88,44,510,43.3,0.222,26,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+8,154,78,32,0,32.4,0.443,45,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,128,88,39,110,36.5,1.057,37,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+7,137,90,41,0,32,0.391,39,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+0,123,72,0,0,36.3,0.258,52,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,106,76,0,0,37.5,0.197,26,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+6,190,92,0,0,35.5,0.278,66,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,88,58,26,16,28.4,0.766,22,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,170,74,31,0,44,0.403,43,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+9,89,62,0,0,22.5,0.142,33,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+10,101,76,48,180,32.9,0.171,63,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+2,122,70,27,0,36.8,0.34,27,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+5,121,72,23,112,26.2,0.245,30,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,126,60,0,0,30.1,0.349,47,1,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+1,93,70,31,0,30.4,0.315,23,0,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
